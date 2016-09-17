@@ -4,8 +4,8 @@
 Author : James Arambam
 Date   : 16 Sep 2016
 Description :
-Input : 
-Output : 
+Input :
+Output :
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 """
@@ -55,7 +55,7 @@ def main():
     a1[1][1] = 6.2
 
     cObj, ptrs = jn.getPointers(a0, a1)
-    cObj.gateWay(ptrs[0], 2, ptrs[1])
+    cObj.gateWay(ptrs[0], 2, 2, ptrs[1])
 
 
 
