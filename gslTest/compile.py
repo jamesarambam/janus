@@ -13,7 +13,7 @@ os.system("rm *.o")
 o = platform.system()
 
 compArg_C = []
-compArg_Cpp = []
+compArg_Cpp = ["-L/home/james/gsl/lib", "-I/home/james/gsl/include", "-lgsl", "-lgslcblas", "-lm"]
 
 cArg = ""
 cppArg = ""
@@ -23,16 +23,17 @@ if len(compArg_Cpp) > 0 :
     cppArg = reduce(lambda v1, v2 : v1+" "+v2, compArg_Cpp)
 
 
-
 # =============== Execute This First ================= #
 # print "export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH"
 # exit()
 # ==================================================== #
 
+
+
 if o == "Linux":
     d = platform.dist()
     if d[0] == "debian":
-        os.system("export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
+#        os.system("export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
         os.system("g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
         os.system("g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
         os.system("gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)

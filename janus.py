@@ -62,30 +62,44 @@ def createCcode(arrs, dim):
     with open("main.c", 'w') as f:
         f.write("#include <stdio.h>\n\n")
         f.write("extern void gateWay2Cpp(")
+        tstr = ""
         for item in range(0, len(arrs)):
             if len(dim[item]) == 1:
-                f.write("double *, ")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int , ", [i for i in range(len(dim[item]))]))
+                tstr += "double *, "
             else:
-                f.write(reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int , ", [i for i in range(len(dim[item]))])))
-                f.write("double (*)"+reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"]", [i for i in range(1, len(dim[item]))]))+");")
-
-
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int , ", [i for i in range(len(dim[item]))]))
+                tstr += "double (*)"+reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"], ", [i for i in range(1, len(dim[item]))]))
+        f.write(tstr[0:len(tstr)-2]+");")
+        tstr = ""
         f.write("\n\nvoid gateWay(")
         for item in range(0, len(arrs)):
             if len(dim[item]) == 1:
-                f.write("double *a"+str(item)+", ")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "double *a"+str(item)+","
             else:
-                f.write(reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))])))
-                f.write("double a"+ str(item) +reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"]", [i for i in range(len(dim[item]))]))+")")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "double a"+ str(item) +reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"]", [i for i in range(len(dim[item]))]))
+                tstr += ", "
+        tstr = tstr[0:len(tstr)-2]
+        f.write(tstr)
+        f.write(")")
         f.write("\n")
         f.write("{\n\n")
         f.write("  gateWay2Cpp(")
+        tstr = ""
         for item in range(0, len(arrs)):
             if len(dim[item]) == 1:
-                f.write("a"+str(item)+", ")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "a"+str(item)+", "
             else:
-                f.write(reduce(lambda v1, v2 : v1+""+v2, map(lambda x : dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))])))
-                f.write("a"+ str(item)+");")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "a"+ str(item)
+                tstr += ", "
+
+        tstr = tstr[0:len(tstr)-2]
+        f.write(tstr)
+        f.write(");")
         f.write("\n\n}")
     print "main.c created !"
 
@@ -96,16 +110,19 @@ def createCppCode(arrs, dim):
     with open("CPPfile.cpp", 'w') as f:
         f.write("#include <iostream>\n")
         f.write("using namespace std;\n\n")
-
         f.write('extern "C" void gateWay2Cpp(')
+        tstr = ""
         for item in range(0, len(arrs)):
             if len(dim[item]) == 1:
-                f.write("double *a"+str(item)+", ")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "double *a"+str(item)+", "
             else:
-                tstr1 = ""
-                f.write(reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))])))
-
-                f.write("double a"+ str(item) +reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"]", [i for i in range(len(dim[item]))]))+")")
+                tstr += reduce(lambda v1, v2 : v1+""+v2, map(lambda x : "int "+dmap[x]+str(item)+", ", [i for i in range(len(dim[item]))]))
+                tstr += "double (*a"+ str(item)+")" +reduce(lambda  v1, v2 : v1+""+v2, map(lambda x : "["+str(dim[item][x])+"]", [i for i in range(1, len(dim[item]))]))
+                tstr += ", "
+        tstr = tstr[0:len(tstr)-2]
+        f.write(tstr)
+        f.write(")")
         f.write("\n")
         f.write("{\n\n\n}")
     print "CPPfile.cpp created !"
@@ -129,6 +146,8 @@ def getPointers(*ar):
         exit()
     else:
         cObj = ctypes.cdll.LoadLibrary("./main.so")
+
+
     return cObj, ptrs
 
 
