@@ -13,7 +13,7 @@ os.system("rm *.o")
 o = platform.system()
 
 compArg_C = []
-#compArg_Cpp = ["-L/usr/include/boost/" "-lboost_filesystem"]
+compArg_Cpp = ["-I/home/james/boost/include/ -L/home/james/boost/lib/"]
 compArg_Cpp = []
 
 cArg = ""

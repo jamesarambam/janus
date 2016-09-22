@@ -33,7 +33,6 @@ extern "C" void gateWay2Cpp(int i0, double *a0, int i1, double *a1)
 
     state_type x = { 10.0 , 1.0 , 1.0 }; // initial conditions
     integrate( lorenz , x , 0.0 , 25.0 , 0.1 , write_lorenz );
-	  cout<<"\n -------------------- \n";
   cout <<"C++ change 2\n";
   cout<<"Waala from C++"<<"\n";
   cout<<"\n -------------------- \n";
