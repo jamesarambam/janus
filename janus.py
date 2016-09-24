@@ -42,6 +42,7 @@ print "# ============================ START ============================ #"
 
 ppath = os.getcwd() + "/"  # Project Path Location
 
+global wd
 
 # -------------------------------------------------------------- #
 
@@ -59,7 +60,7 @@ def getDim(arrs):
 def createCcode(arrs, dim):
 
     dmap = {0 : 'i', 1 : 'j', 2 : 'k', 3 : 'l', 4 : 'm'}
-    with open("main.c", 'w') as f:
+    with open(wd+"main.c", 'w') as f:
         f.write("#include <stdio.h>\n\n")
         f.write("extern void gateWay2Cpp(")
         tstr = ""
@@ -107,7 +108,7 @@ def createCcode(arrs, dim):
 def createCppCode(arrs, dim):
 
     dmap = {0 : 'i', 1 : 'j', 2 : 'k', 3 : 'l', 4 : 'm'}
-    with open("CPPfile.cpp", 'w') as f:
+    with open(wd+"CPPfile.cpp", 'w') as f:
         f.write("#include <iostream>\n")
         f.write("using namespace std;\n\n")
         f.write('extern "C" void gateWay2Cpp(')
@@ -128,9 +129,13 @@ def createCppCode(arrs, dim):
     print "CPPfile.cpp created !"
 
 
-
 def getPointers(*ar):
 
+    global wd
+
+    if not os.path.exists(ppath+"/lib/"):
+        os.makedirs(ppath+"/lib/")
+    wd = ppath + "/lib/"
     arrs = list(ar)
     dim = getDim(arrs)
     ptrs = {}
@@ -140,12 +145,12 @@ def getPointers(*ar):
         ptrs[iCount] = tmp1
         iCount += 1
 
-    if not (os.path.exists("main.c") and os.path.exists("CPPfile.cpp")):
+    if not (os.path.exists(wd+"main.c") and os.path.exists(wd+"CPPfile.cpp")):
         createCcode(arrs, dim)
         createCppCode(arrs, dim)
         exit()
     else:
-        cObj = ctypes.cdll.LoadLibrary("./main.so")
+        cObj = ctypes.cdll.LoadLibrary(wd+"./main.so")
 
 
     return cObj, ptrs

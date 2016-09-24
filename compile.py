@@ -8,8 +8,8 @@ import platform
 
 ppath = os.getcwd()
 
-os.system("rm *.so")
-os.system("rm *.o")
+os.system("cd lib/ && rm *.so")
+os.system("cd lib/ && rm *.o")
 o = platform.system()
 
 compArg_C = []
@@ -24,33 +24,33 @@ if len(compArg_Cpp) > 0 :
 
 
 
-# =============== Execute This First ================= #
+ppath += "/lib/"
+# =============== Execute This First Manually in Terminal================= #
 # print "export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH"
 # exit()
 # ==================================================== #
-
 if o == "Linux":
     d = platform.dist()
     if d[0] == "debian":
-        os.system("export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
-        os.system("g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
-        os.system("g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
-        os.system("gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)
-        os.system("gcc main.o -shared -o main.so -L"+ppath+" -lCPPfile "+cArg)
+        os.system("cd lib/ && export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
+        os.system("cd lib/ && g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
+        os.system("cd lib/ && g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
+        os.system("cd lib/ && gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)
+        os.system("cd lib/ && gcc main.o -shared -o main.so -L"+ppath+" -lCPPfile "+cArg)
 
     if d[0] == "centos":
-        os.system("export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
-        os.system("g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
-        os.system("g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
-        os.system("gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)
-        os.system("gcc main.o -shared -o main.so -L"+ppath+" -lCPPfile "+cArg)
+        os.system("cd lib/ && export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
+        os.system("cd lib/ && g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
+        os.system("cd lib/ && g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
+        os.system("cd lib/ && gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)
+        os.system("cd lib/ && gcc main.o -shared -o main.so -L"+ppath+" -lCPPfile "+cArg)
 
 if o == "Darwin":
-    os.system("export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
-    os.system("g++ -c -Wall -Werror -fPIC CPPfile.cpp " + cppArg)
-    os.system("g++ -shared -o libCPPfile.so CPPfile.o " + cppArg)
-    os.system("gcc -c -fPIC -Wall main.c -L" + ppath + " -lCPPfile " + cArg)
-    os.system("gcc main.o -shared -o main.so -L" + ppath + " -lCPPfile " + cArg)
+    os.system("cd lib/ && export LD_LIBRARY_PATH="+ppath+":$LD_LIBRARY_PATH")
+    os.system("cd lib/ && g++ -c -Wall -Werror -fPIC CPPfile.cpp "+cppArg)
+    os.system("cd lib/ && g++ -shared -o libCPPfile.so CPPfile.o "+cppArg)
+    os.system("cd lib/ && gcc -c -fPIC -Wall main.c -L"+ppath+ " -lCPPfile "+cArg)
+    os.system("cd lib/ && gcc main.o -shared -o main.so -L"+ppath+" -lCPPfile "+cArg)
 
 
 
