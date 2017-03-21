@@ -37,4 +37,4 @@ extern "C" void gateWay2Cpp(int i0, double *a0, int i1, int j1, double (*a1)[2])
   
 }
 ```
-For compiling C++ code run "compile.py" first and then you can run the python code. 
+To generate the C++ file CPPfile.cpp, run main.py once, then you can compile it by executing "compile.py". 
